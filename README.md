@@ -21,7 +21,7 @@ git submodule update
 
 ### CMake and build:
 
-Use build.bat or ./build.sh script, or cmake commande line (example for Linux): 
+Use ./build.sh script, or cmake commande line (example for Linux): 
 
 ```Shell
 mkdir -p build
@@ -37,5 +37,5 @@ cmake --build .
 
 ### Run
 
-Launch build/cedictToSqlite from the command line
+Launch build/cedictToSqlite from the command line with a cedict._ts.u8 file in the directory running the executable
 
