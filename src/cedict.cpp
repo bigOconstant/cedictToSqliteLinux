@@ -133,11 +133,12 @@ std::string cedict::convertToTones(std::string input) {
 	std::string itones [5] = {"ī", "í", "ǐ", "ì", "i"};
 	std::string otones [5] = {"ō", "ó", "ǒ", "ò", "o"};
 	std::string udottones [5] = {"ǖ", "ǘ", "ǚ", "ǜ", "ü"};
+	std::string utones [5] = {"ū", "ú", "ǔ", "ù", "u"};
 
 
 
 	// Look for u values replace u: with ü
-	std::regex_replace(input, std::regex("u:"), "ü");
+	
 
 //replace a or e with its tone because thats one of the easiest
 	//A and e trump all other vowels and always take the tone mark.
@@ -197,7 +198,16 @@ std::string cedict::convertToTones(std::string input) {
               input.replace(positiontobereplaced,std::string("o").length(),otones[tone-1]);
 			}
 			else if(voweltoreplace == "u"){
-              input.replace(positiontobereplaced,std::string("u").length(),udottones[tone-1]);
+			 input =  std::regex_replace(input, std::regex("u:"), "ü");
+			
+			 
+              
+			  if(input.find("ü") != std::string::npos){
+				   std::cout<<"value:"<<input<<std::endl;
+			  	input.replace(positiontobereplaced,udottones[tone-1].length(),udottones[tone-1]);
+			  }else{
+			  	input.replace(positiontobereplaced,utones[tone-1].length(),utones[tone-1]);
+			  }
 			}
 			else if(voweltoreplace == "i"){
               input.replace(positiontobereplaced,std::string("I").length(),itones[tone-1]);
@@ -206,7 +216,13 @@ std::string cedict::convertToTones(std::string input) {
               input.replace(positiontobereplaced,std::string("O").length(),otones[tone-1]);
 			}
 			else if(voweltoreplace == "U"){
-               input.replace(positiontobereplaced,std::string("u").length(),udottones[tone-1]);
+              std::regex_replace(input, std::regex("u:"), "ü");
+              
+			  if(input.find("ü") != std::string::npos){
+			  	input.replace(positiontobereplaced,udottones[tone-1].length(),udottones[tone-1]);
+			  }else{
+			  	input.replace(positiontobereplaced,utones[tone-1].length(),utones[tone-1]);
+			  }
 			}
 
 		}
