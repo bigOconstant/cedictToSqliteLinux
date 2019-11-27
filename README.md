@@ -3,7 +3,8 @@ cedictToSqlite
 
 
 ## About cedictToSqlite:
-Converts a cedict dictionary file to a sqlite3 database file. Only works on linux. Windows utf-8 problems have not been solved.
+Converts a cedict dictionary file to a sqlite3 database file. Only works on linux. Windows utf-8 problems have not been solved;
+however, runs fine in WSL. 
 
 
 
