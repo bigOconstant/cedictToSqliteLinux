@@ -203,7 +203,7 @@ std::string cedict::convertToTones(std::string input) {
 			 
               
 			  if(input.find("ü") != std::string::npos){
-				   std::cout<<"value:"<<input<<std::endl;
+				  // std::cout<<"value:"<<input<<std::endl;
 			  	input.replace(positiontobereplaced,udottones[tone-1].length(),udottones[tone-1]);
 			  }else{
 			  	input.replace(positiontobereplaced,utones[tone-1].length(),utones[tone-1]);
