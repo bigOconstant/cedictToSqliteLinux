@@ -9,6 +9,10 @@ public:
 	void createDefinitionsTable();
 	void createDatabaseFile();
 	void insertcedict(cedict* input, int counter);
+	void createFavoritesTable();
+	void createtagnameTable();
+	void createfavoritetagsTable();
+
 	void insertdefinitions(std::string input, int cedictid);
 
 };

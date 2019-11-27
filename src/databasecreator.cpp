@@ -21,6 +21,55 @@ void databasecreator::createDatabaseFile() {
 		std::cout << "exception: " << e.what() << std::endl;
 	}
 }
+void databasecreator::createFavoritesTable() {
+	try {
+		std::cout << "Creating favorites table" << std::endl;
+		std::string dest = "cedict.db3";
+		std::string tablename = "favorites";
+		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		SQLite::Transaction transaction(db);
+		db.exec("DROP TABLE IF EXISTS favorites");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,notes TEXT,cedictid INTEGER, FOREIGN KEY(cedictid) REFERENCES cedict(id) )");
+		std::cout << "Finished Creating favorites table "<< std::endl;
+		transaction.commit();
+	}
+	catch (std::exception & e) {
+		std::cout << "exception: " << e.what() << std::endl;
+	}
+
+}
+void databasecreator::createtagnameTable(){
+	try {
+		std::cout << "Creating tagnames table" << std::endl;
+		std::string dest = "cedict.db3";
+		std::string tablename = "tagnames";
+		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		SQLite::Transaction transaction(db);
+		db.exec("DROP TABLE IF EXISTS tagnames");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name TEXT)");
+		std::cout << "Finished Creating tagnames table "<< std::endl;
+		transaction.commit();
+	}
+	catch (std::exception & e) {
+		std::cout << "exception: " << e.what() << std::endl;
+	}
+}
+void databasecreator::createfavoritetagsTable(){
+	try {
+		std::cout << "Creating tagnames table" << std::endl;
+		std::string dest = "cedict.db3";
+		std::string tablename = "favoritetags";
+		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		SQLite::Transaction transaction(db);
+		db.exec("DROP TABLE IF EXISTS "+tablename);
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,tagid INTEGER,favoriteid INTEGER,FOREIGN KEY(tagid) REFERENCES tagnames(id), FOREIGN KEY(favoriteid) REFERENCES favorites(id))");
+		std::cout << "Finished Creating "+tablename+" table "<< std::endl;
+		transaction.commit();
+	}
+	catch (std::exception & e) {
+		std::cout << "exception: " << e.what() << std::endl;
+	}
+}
 
 
 void databasecreator::createDefinitionsTable() {
@@ -52,6 +101,9 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 	std::cout << "Begin database creation" << std::endl;
 
 	createDatabaseFile();
+	createFavoritesTable();
+	createtagnameTable();
+	createfavoritetagsTable();
 	createDefinitionsTable();
 	int counter = 1;
 	std::cout << "Begin inserting all that into new table" << std::endl;

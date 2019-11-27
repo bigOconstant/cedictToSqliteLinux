@@ -223,23 +223,28 @@ std::string cedict::convertToTones(std::string input) {
 
 void cedict::setDefinitions(std::string input) {
 	std::stringstream ss(input);
+	//std::cout<<"input:"<<input<<std::endl;
     std::string token;
 	char c = '/';
     input.erase(0, 1);
     input.erase(input.size() - 1);
-    input.erase(input.size() - 1);
-
+    //input.erase(input.size() - 1);
+	//std::cout<<"input2:"<<input<<std::endl;
     std::string definition = "";
 
     
     for (auto it = input.cbegin() ; it != input.cend(); ++it) {
         if((*it) == '/'){
+			//std::cout<<"Adding:"<<definition<<std::endl;
             this->addDefinition(definition);
             definition = "";
         }else{
             definition += (*it);
         }
 		
+	}
+	if(this->getDefinitions().size() <1){
+		std::cout<<"prblem"<<std::endl;
 	}
 }
 void cedict::printDefinitions(){
