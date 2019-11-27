@@ -13,8 +13,8 @@ Converts a cedict dictionary file to a sqlite3 database file. Only works on linu
 Use git to clone the repository. Then init and update submodule "SQLiteCpp".
 
 ```Shell
-git clone https://github.com/SRombauts/SQLiteCpp_Example.git
-cd SQLiteCpp_Example
+git clone https://github.com/camccar/cedictToSqliteLinux.git
+cd cedictToSqliteLinux
 git submodule init
 git submodule update
 ```
