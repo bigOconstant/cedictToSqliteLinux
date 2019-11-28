@@ -51,13 +51,14 @@ delimiter = "]";
 value->setPinyinNumbered(input.substr(0,input.find(delimiter)));
 input.erase(0, input.find(delimiter) + delimiter.length());
 //cout<<"Numbered Pinyin:"<<value->getPinyinNumbered()<<endl;
-value->setBasicPinyin(value->getPinyinNumbered());
+value->setBasicPinyin();
 //cout<<"basic pinyin:"+value->getBasicPinyin()<<endl;
 input.erase(0, input.find("//") +std::string("//").length());
 
   value->setDefinitions(input);
 
   value->setPinyin(value->getPinyinNumbered());
+  value->setBasicPinyin();
   //std::cout<<"Pinyin:"<<value->getPinyin()<<std::endl;;
   //value->printDefinitions();
   return value; 

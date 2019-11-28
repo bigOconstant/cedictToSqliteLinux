@@ -51,6 +51,11 @@ std::string cedict::getPinyinNumbered() {
 std::vector<std::string> cedict::getDefinitions() {
 	return this->Definitions;
 }
+std::string cedict::getPinyinBasic(){
+	return this->BasicPinyin;
+}
+
+
 
 void cedict::setId(int input) {
 	this->Id = input;
@@ -71,13 +76,17 @@ void cedict::addDefinition(std::string input) {
 	this->Definitions.push_back(input);
 }
 
-void cedict::setBasicPinyin(std::string str){
-	str.erase(std::remove(str.begin(), str.end(), '1'), str.end());
-	str.erase(std::remove(str.begin(), str.end(), '2'), str.end());
-	str.erase(std::remove(str.begin(), str.end(), '3'), str.end());
-	str.erase(std::remove(str.begin(), str.end(), '4'), str.end());
-	str.erase(std::remove(str.begin(), str.end(), '5'), str.end());
-	this->BasicPinyin = str;
+void cedict::setBasicPinyin(){
+	auto copy = this->getPinyinNumbered();
+	copy.erase(std::remove(copy.begin(), copy.end(), '1'), copy.end());
+	copy.erase(std::remove(copy.begin(), copy.end(), '2'), copy.end());
+	copy.erase(std::remove(copy.begin(), copy.end(), '3'), copy.end());
+	copy.erase(std::remove(copy.begin(), copy.end(), '4'), copy.end());
+	copy.erase(std::remove(copy.begin(), copy.end(), '5'), copy.end());
+	copy.erase(std::remove(copy.begin(), copy.end(), ':'), copy.end());
+	
+	this->BasicPinyin = copy;
+	
 
 }
 std::string cedict::getBasicPinyin(){
@@ -151,6 +160,7 @@ std::string cedict::convertToTones(std::string input) {
 			std::string str = "a";
 			input = std::regex_replace(input, std::regex("a"), atones[tone-1]);
 			input = std::regex_replace(input, std::regex("e"), etones[tone-1]);
+			input =  std::regex_replace(input, std::regex("u:"), "ü");
 		}
 
 	}
@@ -160,6 +170,7 @@ std::string cedict::convertToTones(std::string input) {
 		if(tone != 0){
 			std::string str = "o";
 			input = std::regex_replace(input, std::regex("o"), otones[tone-1]);
+			input =  std::regex_replace(input, std::regex("u:"), "ü");
 			
 		}
 	}
@@ -192,10 +203,12 @@ std::string cedict::convertToTones(std::string input) {
 
 			if(voweltoreplace == "i"){
 						
-						input.replace(positiontobereplaced,std::string("i").length(),itones[tone-1]);
+			 input.replace(positiontobereplaced,std::string("i").length(),itones[tone-1]);
+			 input =  std::regex_replace(input, std::regex("u:"), "ü");
 			}
 			else if(voweltoreplace == "o"){
               input.replace(positiontobereplaced,std::string("o").length(),otones[tone-1]);
+			  input =  std::regex_replace(input, std::regex("u:"), "ü");
 			}
 			else if(voweltoreplace == "u"){
 			 input =  std::regex_replace(input, std::regex("u:"), "ü");
@@ -209,11 +222,13 @@ std::string cedict::convertToTones(std::string input) {
 			  	input.replace(positiontobereplaced,utones[tone-1].length(),utones[tone-1]);
 			  }
 			}
-			else if(voweltoreplace == "i"){
+			else if(voweltoreplace == "I"){
               input.replace(positiontobereplaced,std::string("I").length(),itones[tone-1]);
+			  input =  std::regex_replace(input, std::regex("u:"), "ü");
 			}
 			else if(voweltoreplace == "O"){
               input.replace(positiontobereplaced,std::string("O").length(),otones[tone-1]);
+			  input =  std::regex_replace(input, std::regex("u:"), "ü");
 			}
 			else if(voweltoreplace == "U"){
               std::regex_replace(input, std::regex("u:"), "ü");

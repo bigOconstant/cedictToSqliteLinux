@@ -13,7 +13,7 @@ void databasecreator::createDatabaseFile() {
 		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		SQLite::Transaction transaction(db);
 		db.exec("DROP TABLE IF EXISTS cedict");
-		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY, pinyin adLongVarWChar,pinyinnumbered adLongVarWChar,simplified adLongVarWChar ,traditional adLongVarWChar)");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY, pinyin adLongVarWChar,pinyinnumbered adLongVarWChar,simplified adLongVarWChar ,traditional adLongVarWChar,basicpinyin Text)");
 		std::cout << "Created cedict table and database" << std::endl;
 		transaction.commit();
 	}
@@ -122,13 +122,14 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 
 		for (auto it = bag.begin(); it < bag.end(); ++it) {
 			std::shared_ptr<SQLite::Statement>  query;
-			query.reset(new SQLite::Statement(db, "INSERT INTO cedict (id,pinyin,pinyinnumbered,simplified,traditional) VALUES(?,?,?,?,?)"));
+			query.reset(new SQLite::Statement(db, "INSERT INTO cedict (id,pinyin,pinyinnumbered,simplified,traditional,basicpinyin) VALUES(?,?,?,?,?,?)"));
 
 			query->bind(1, counter);
 			query->bind(2, (*it)->getPinyin());
 			query->bind(3, (*it)->getPinyinNumbered());
 			query->bind(4, (*it)->getSimplified());
 			query->bind(5, (*it)->getTraditional());
+			query->bind(6, (*it)->getPinyinBasic());
 			while (query->executeStep())
 			{
 			}

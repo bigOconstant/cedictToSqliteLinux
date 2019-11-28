@@ -9,6 +9,7 @@ public:
 	std::string getSimplified();
 	std::string getPinyinNumbered();
 	std::string getPinyin();
+	std::string getPinyinBasic();
 	std::vector<std::string> getDefinitions();
 	int getId();
 
@@ -20,7 +21,8 @@ public:
 	void addDefinition(std::string input);
 	void setDefinitions(std::string input);
 	void setId(int input);
-	void setBasicPinyin(std::string str);
+	void setBasicPinyin();
+	
 	void printDefinitions();
 	std::string getBasicPinyin();
 
