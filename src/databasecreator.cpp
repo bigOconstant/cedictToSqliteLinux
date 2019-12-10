@@ -29,7 +29,7 @@ void databasecreator::createFavoritesTable() {
 		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		SQLite::Transaction transaction(db);
 		db.exec("DROP TABLE IF EXISTS favorites");
-		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,notes TEXT,cedictid INTEGER, FOREIGN KEY(cedictid) REFERENCES cedict(id) )");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,notes TEXT,cedictid INTEGER,highlight TEXT, FOREIGN KEY(cedictid) REFERENCES cedict(id) )");
 		std::cout << "Finished Creating favorites table "<< std::endl;
 		transaction.commit();
 	}
