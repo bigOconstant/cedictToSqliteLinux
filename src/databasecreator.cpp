@@ -13,7 +13,7 @@ void databasecreator::createDatabaseFile() {
 		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		SQLite::Transaction transaction(db);
 		db.exec("DROP TABLE IF EXISTS cedict");
-		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY, pinyin adLongVarWChar,pinyinnumbered adLongVarWChar,simplified adLongVarWChar ,traditional adLongVarWChar,basicpinyin Text)");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY, pinyin adLongVarWChar,pinyinnumbered adLongVarWChar,simplified adLongVarWChar ,traditional adLongVarWChar,basicpinyin Text,colorid INTEGER, FOREIGN KEY(colorid) REFERENCES colors(id) )");
 		std::cout << "Created cedict table and database" << std::endl;
 		transaction.commit();
 	}
@@ -29,7 +29,7 @@ void databasecreator::createFavoritesTable() {
 		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		SQLite::Transaction transaction(db);
 		db.exec("DROP TABLE IF EXISTS favorites");
-		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,notes TEXT,cedictid INTEGER,highlight TEXT, FOREIGN KEY(cedictid) REFERENCES cedict(id) )");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,notes TEXT,cedictid INTEGER, FOREIGN KEY(cedictid) REFERENCES cedict(id) )");
 		std::cout << "Finished Creating favorites table "<< std::endl;
 		transaction.commit();
 	}
@@ -62,8 +62,8 @@ try {
 		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		SQLite::Transaction transaction(db);
 		db.exec("DROP TABLE IF EXISTS tagnames");
-		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name Text,color TEXT)");
-		std::cout << "Finished Creating +"+ tablename+"+ table "<< std::endl;
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,color Text,name Text)");
+		std::cout << "Finished Creating "+ tablename+" table "<< std::endl;
 		transaction.commit();
 	}
 	catch (std::exception & e) {
