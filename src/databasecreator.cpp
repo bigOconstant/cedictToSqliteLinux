@@ -51,6 +51,7 @@ void databasecreator::createtagnameTable() {
 		transaction.commit();
 	}
 	catch (std::exception & e) {
+
 		std::cout << "exception: " << e.what() << std::endl;
 	}
 }
@@ -122,6 +123,7 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 	createfavoritetagsTable();
 	createDefinitionsTable();
 	createcolorsTable();
+	createtagnameTable();
 	int counter = 1;
 	std::cout << "Begin inserting all that into new table" << std::endl;
 	try {
