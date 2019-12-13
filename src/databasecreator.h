@@ -11,6 +11,7 @@ public:
 	void insertcedict(cedict* input, int counter);
 	void createFavoritesTable();
 	void createtagnameTable();
+	void createcolorsTable();
 	void createfavoritetagsTable();
 
 	void insertdefinitions(std::string input, int cedictid);

@@ -38,7 +38,7 @@ void databasecreator::createFavoritesTable() {
 	}
 
 }
-void databasecreator::createtagnameTable(){
+void databasecreator::createtagnameTable() {
 	try {
 		std::cout << "Creating tagnames table" << std::endl;
 		std::string dest = "cedict.db3";
@@ -48,6 +48,22 @@ void databasecreator::createtagnameTable(){
 		db.exec("DROP TABLE IF EXISTS tagnames");
 		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name TEXT)");
 		std::cout << "Finished Creating tagnames table "<< std::endl;
+		transaction.commit();
+	}
+	catch (std::exception & e) {
+		std::cout << "exception: " << e.what() << std::endl;
+	}
+}
+void databasecreator::createcolorsTable() {
+try {
+		std::cout << "Creating colors table" << std::endl;
+		std::string dest = "cedict.db3";
+		std::string tablename = "colors";
+		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		SQLite::Transaction transaction(db);
+		db.exec("DROP TABLE IF EXISTS tagnames");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name Text,color TEXT)");
+		std::cout << "Finished Creating +"+ tablename+"+ table "<< std::endl;
 		transaction.commit();
 	}
 	catch (std::exception & e) {
@@ -105,6 +121,7 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 	createtagnameTable();
 	createfavoritetagsTable();
 	createDefinitionsTable();
+	createcolorsTable();
 	int counter = 1;
 	std::cout << "Begin inserting all that into new table" << std::endl;
 	try {
@@ -152,6 +169,23 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 
 		}
 
+		//Insert Colors
+		std::shared_ptr<SQLite::Statement>  query;
+		query.reset();
+		std::string yellow = "#E3FF1F";
+		query.reset(new SQLite::Statement(db, "INSERT INTO colors (id,name,color) VALUES(1,'yellow',?)"));
+		query->bind(1, yellow);
+		while (query->executeStep()){}
+		query.reset();
+		std::string blue = "#2876FF";
+		query.reset(new SQLite::Statement(db, "INSERT INTO colors (id,name,color) VALUES(2,'blue',?)"));
+		query->bind(1, blue);
+		while (query->executeStep()){}
+		query.reset();
+		std::string green = "#34FF38";
+		query.reset(new SQLite::Statement(db, "INSERT INTO colors (id,name,color) VALUES(3,'green',?)"));
+		query->bind(1, green);
+		while (query->executeStep()){}
 
 		std::cout << "Finished inserting " << counter << " dictonary objects" << std::endl;
 		transaction.commit();
