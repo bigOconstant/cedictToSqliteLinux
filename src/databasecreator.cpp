@@ -62,7 +62,7 @@ try {
 		std::string tablename = "colors";
 		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		SQLite::Transaction transaction(db);
-		db.exec("DROP TABLE IF EXISTS tagnames");
+		db.exec("DROP TABLE IF EXISTS "+tablename);
 		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,color Text,name Text)");
 		std::cout << "Finished Creating "+ tablename+" table "<< std::endl;
 		transaction.commit();
@@ -106,6 +106,23 @@ void databasecreator::createDefinitionsTable() {
 	}
 
 }
+void databasecreator::createSearchHistoryTable(){
+	try {
+		std::string tablename = "searchhistory";
+		std::cout << "Creating "<<tablename<<" table" << std::endl;
+		std::string dest = "cedict.db3";
+		
+		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		SQLite::Transaction transaction(db);
+		db.exec("DROP TABLE IF EXISTS "+tablename);
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,searchterm adLongVarWChar, Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)");
+		std::cout << "Finished Creating "<<tablename<<" table " << std::endl;
+		transaction.commit();
+	}
+	catch (std::exception & e) {
+		std::cout << "exception: " << e.what() << std::endl;
+	}
+}
 
 void databasecreator::createdatabase(std::vector<cedict*> bag) {
 
@@ -124,6 +141,7 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 	createDefinitionsTable();
 	createcolorsTable();
 	createtagnameTable();
+	createSearchHistoryTable();
 	int counter = 1;
 	std::cout << "Begin inserting all that into new table" << std::endl;
 	try {
@@ -187,6 +205,10 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 		std::string green = "#34FF38";
 		query.reset(new SQLite::Statement(db, "INSERT INTO colors (id,name,color) VALUES(3,'green',?)"));
 		query->bind(1, green);
+		while (query->executeStep()){}
+		std::string red = "#EB4034";
+		query.reset(new SQLite::Statement(db, "INSERT INTO colors (id,name,color) VALUES(4,'red',?)"));
+		query->bind(1, red);
 		while (query->executeStep()){}
 
 		std::cout << "Finished inserting " << counter << " dictonary objects" << std::endl;

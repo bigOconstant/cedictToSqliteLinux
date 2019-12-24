@@ -197,7 +197,7 @@ std::string cedict::convertToTones(std::string input) {
 					break;	
 			}
 		}
-		if(vowelexist){
+		if(vowelexist && detectTone(input) != 0){
 			int tone =detectTone(input);
 
 
