@@ -211,15 +211,18 @@ std::string cedict::convertToTones(std::string input) {
 			  input =  std::regex_replace(input, std::regex("u:"), "ü");
 			}
 			else if(voweltoreplace == "u"){
+			std::cout<<"input with u first:"<<input<<std::endl;
 			 input =  std::regex_replace(input, std::regex("u:"), "ü");
 			
-			 
+			 std::cout<<"input with u after u:"<<input<<std::endl;
               
 			  if(input.find("ü") != std::string::npos){
 				  // std::cout<<"value:"<<input<<std::endl;
 			  	input.replace(positiontobereplaced,udottones[tone-1].length(),udottones[tone-1]);
+				  //std::cout<<"input with u third:"<<input<<std::endl;
 			  }else{
-			  	input.replace(positiontobereplaced,utones[tone-1].length(),utones[tone-1]);
+			  	input.replace(positiontobereplaced,1,utones[tone-1]);
+				  std::cout<<"input with u fourth:"<<input<<std::endl;
 			  }
 			}
 			else if(voweltoreplace == "I"){
@@ -234,9 +237,12 @@ std::string cedict::convertToTones(std::string input) {
               std::regex_replace(input, std::regex("u:"), "ü");
               
 			  if(input.find("ü") != std::string::npos){
-			  	input.replace(positiontobereplaced,udottones[tone-1].length(),udottones[tone-1]);
+			  	//input.replace(positiontobereplaced,udottones[tone-1].length(),udottones[tone-1]);
+				 input = std::regex_replace(input, std::regex("ü"),udottones[tone-1]);
 			  }else{
-			  	input.replace(positiontobereplaced,utones[tone-1].length(),utones[tone-1]);
+			  	//input.replace(positiontobereplaced,utones[tone-1].length(),utones[tone-1]);
+				input = std::regex_replace(input, std::regex("u"),utones[tone-1]);
+				input = std::regex_replace(input, std::regex("U"),utones[tone-1]);
 			  }
 			}
 
