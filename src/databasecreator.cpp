@@ -107,12 +107,30 @@ void databasecreator::createfavoritetagsTable(){
 
 void databasecreator::createflashcardsTable(){
 	try {
-		std::string tablename = "flashcarddeck"
+		std::string tablename = "flashcarddeck";
+		std::string dest = "cedict.db3";
 		std::cout << "Creating "<< tablename <<" table" << std::endl;
 		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		SQLite::Transaction transaction(db);
 		db.exec("DROP TABLE IF EXISTS "+tablename);
-		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name TEXT,description TEXT),front TEXT,back TEXT");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name TEXT,description TEXT,front TEXT,back TEXT)");
+		std::cout << "Finished Creating "+tablename+" table "<< std::endl;
+		transaction.commit();
+	}
+
+	catch (std::exception & e) {
+		std::cout << "exception: " << e.what() << std::endl;
+	}
+}
+void databasecreator::createEnumTable(){
+	try {
+		std::string tablename = "enums";
+		std::string dest = "cedict.db3";
+		std::cout << "Creating "<< tablename <<" table" << std::endl;
+		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		SQLite::Transaction transaction(db);
+		db.exec("DROP TABLE IF EXISTS "+tablename);
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name TEXT,description TEXT)");
 		std::cout << "Finished Creating "+tablename+" table "<< std::endl;
 		transaction.commit();
 	}
@@ -124,12 +142,13 @@ void databasecreator::createflashcardsTable(){
 
 void databasecreator::createflashcardcarddataTable(){
 	try {
-		std::string tablename = "flashcarddata"
+		std::string tablename = "flashcarddata";
+		std::string dest = "cedict.db3";
 		std::cout << "Creating "<< tablename <<" table" << std::endl;
 		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		SQLite::Transaction transaction(db);
 		db.exec("DROP TABLE IF EXISTS "+tablename);
-		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,flashcarddeckid INTEGER,cedictid INTEGER,FOREIGN KEY(flashcarddeckid) REFERENCES REFERENCES flashcarddeck(id), FOREIGN KEY(cedictid) REFERENCES REFERENCES cedict(id))");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,flashcarddeckid INTEGER,cedictid INTEGER,FOREIGN KEY(flashcarddeckid) REFERENCES flashcarddeck(id), FOREIGN KEY(cedictid) REFERENCES cedict(id))");
 		std::cout << "Finished Creating "+tablename+" table "<< std::endl;
 		transaction.commit();
 	}
@@ -194,6 +213,9 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 	createtagnameTable();
 	createSearchHistoryTable();
 	createSettingsTable();
+	createflashcardsTable();
+	createflashcardcarddataTable();
+	createEnumTable();
 	int counter = 1;
 	std::cout << "Begin inserting all that into new table" << std::endl;
 	try {
@@ -270,6 +292,23 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 		while (query->executeStep()){}
 		query.reset(new SQLite::Statement(db,"INSERT INTO settings (id,name,value) VALUES(2,'favoritefontsize','14')"));
 		while (query->executeStep()){}
+		
+/*
+
+		 "enums";
+	
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name TEXT,description TEXT)");
+
+*/
+		//Insert Enums
+		query.reset(new SQLite::Statement(db,"INSERT INTO enums (id,name,description) VALUES(1,'hanzi','chinese character')"));
+		while (query->executeStep()){}
+		query.reset(new SQLite::Statement(db,"INSERT INTO enums (id,name,description) VALUES(2,'pinyin','chinese latin character')"));
+		while (query->executeStep()){}
+		query.reset(new SQLite::Statement(db,"INSERT INTO enums (id,name,description) VALUES(3,'definition','definition')"));
+		while (query->executeStep()){}
+
+
 		transaction.commit();
 		
 	}

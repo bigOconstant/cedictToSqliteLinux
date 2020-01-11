@@ -17,6 +17,7 @@ public:
 	void createSearchHistoryTable();
 	void createflashcardsTable();
 	void createflashcardcarddataTable();
+	void createEnumTable();
 
 
 	void insertdefinitions(std::string input, int cedictid);
