@@ -13,7 +13,11 @@ public:
 	void createtagnameTable();
 	void createcolorsTable();
 	void createfavoritetagsTable();
+	void createSettingsTable();
 	void createSearchHistoryTable();
+	void createflashcardsTable();
+	void createflashcardcarddataTable();
+
 
 	void insertdefinitions(std::string input, int cedictid);
 

@@ -21,6 +21,23 @@ void databasecreator::createDatabaseFile() {
 		std::cout << "exception: " << e.what() << std::endl;
 	}
 }
+
+void databasecreator::createSettingsTable() {
+	std::string tablename = "settings";
+	try{
+		std::string dest = "cedict.db3";
+		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		SQLite::Transaction transaction(db);
+		db.exec("DROP TABLE IF EXISTS "+tablename);
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name TEXT, value TEXT)");
+		std::cout << "Finished Creating "+ tablename+" table "<< std::endl;
+		transaction.commit();
+	}
+	catch (std::exception & e){
+		std::cout << "exception: " << e.what() << std::endl;
+	}
+}
+
 void databasecreator::createFavoritesTable() {
 	try {
 		std::cout << "Creating favorites table" << std::endl;
@@ -88,6 +105,40 @@ void databasecreator::createfavoritetagsTable(){
 	}
 }
 
+void databasecreator::createflashcardsTable(){
+	try {
+		std::string tablename = "flashcarddeck"
+		std::cout << "Creating "<< tablename <<" table" << std::endl;
+		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		SQLite::Transaction transaction(db);
+		db.exec("DROP TABLE IF EXISTS "+tablename);
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,name TEXT,description TEXT),front TEXT,back TEXT");
+		std::cout << "Finished Creating "+tablename+" table "<< std::endl;
+		transaction.commit();
+	}
+
+	catch (std::exception & e) {
+		std::cout << "exception: " << e.what() << std::endl;
+	}
+}
+
+void databasecreator::createflashcardcarddataTable(){
+	try {
+		std::string tablename = "flashcarddata"
+		std::cout << "Creating "<< tablename <<" table" << std::endl;
+		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
+		SQLite::Transaction transaction(db);
+		db.exec("DROP TABLE IF EXISTS "+tablename);
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,flashcarddeckid INTEGER,cedictid INTEGER,FOREIGN KEY(flashcarddeckid) REFERENCES REFERENCES flashcarddeck(id), FOREIGN KEY(cedictid) REFERENCES REFERENCES cedict(id))");
+		std::cout << "Finished Creating "+tablename+" table "<< std::endl;
+		transaction.commit();
+	}
+
+	catch (std::exception & e) {
+		std::cout << "exception: " << e.what() << std::endl;
+	}
+}
+
 
 void databasecreator::createDefinitionsTable() {
 	try {
@@ -142,6 +193,7 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 	createcolorsTable();
 	createtagnameTable();
 	createSearchHistoryTable();
+	createSettingsTable();
 	int counter = 1;
 	std::cout << "Begin inserting all that into new table" << std::endl;
 	try {
@@ -212,6 +264,12 @@ void databasecreator::createdatabase(std::vector<cedict*> bag) {
 		while (query->executeStep()){}
 
 		std::cout << "Finished inserting " << counter << " dictonary objects" << std::endl;
+
+		//Insert Settings
+		query.reset(new SQLite::Statement(db,"INSERT INTO settings (id,name,value) VALUES(1,'hanzilabel','Simplified')"));
+		while (query->executeStep()){}
+		query.reset(new SQLite::Statement(db,"INSERT INTO settings (id,name,value) VALUES(2,'favoritefontsize','14')"));
+		while (query->executeStep()){}
 		transaction.commit();
 		
 	}
