@@ -1,14 +1,4 @@
-/**
- * @file  main.cpp
- * @brief A few short examples in a row.
- *
- *  Demonstrates how-to use the SQLite++ wrapper
- *
- * Copyright (c) 2012-2016 Sebastien Rombauts (sebastien.rombauts@gmail.com)
- *
- * Distributed under the MIT License (MIT) (See accompanying file LICENSE.txt
- * or copy at http://opensource.org/licenses/MIT)
- */
+
 
 #include <iostream>
 #include <cstdio>
