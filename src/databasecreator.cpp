@@ -148,7 +148,7 @@ void databasecreator::createflashcardcarddataTable(){
 		SQLite::Database    db(dest, SQLite::OPEN_READWRITE | SQLite::OPEN_CREATE);
 		SQLite::Transaction transaction(db);
 		db.exec("DROP TABLE IF EXISTS "+tablename);
-		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,flashcarddeckid INTEGER,cedictid INTEGER,FOREIGN KEY(flashcarddeckid) REFERENCES flashcarddeck(id), FOREIGN KEY(cedictid) REFERENCES cedict(id))");
+		db.exec("CREATE TABLE " + tablename + "(id INTEGER PRIMARY KEY,flashcarddeckid INTEGER,cedictid INTEGER,LastEditTime DATETIME DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(flashcarddeckid) REFERENCES flashcarddeck(id), FOREIGN KEY(cedictid) REFERENCES cedict(id))");
 		std::cout << "Finished Creating "+tablename+" table "<< std::endl;
 		transaction.commit();
 	}
