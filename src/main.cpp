@@ -5,10 +5,12 @@
 #include <cstdlib>
 
 #include <SQLiteCpp/SQLiteCpp.h>
+#include "TestData.h"
 #include "cedict.cpp"
 
 #include "databasecreator.cpp"
 #include <fstream>
+
 #ifdef SQLITECPP_ENABLE_ASSERT_HANDLER
 namespace SQLite
 {
@@ -87,6 +89,11 @@ int main ()
 		}
 		definitions.clear();
 		std::cout << "done clearing data" << std::endl;
+		std::cout<<"inserting test data"<<std::endl;
+		//TestData* t = new TestData();
+		//t->GenerateFavoritesData();
+		delete t;
+		std::cout<<"done test data"<<std::endl;
 	}
 	else std::cout << "Unable to open file";
 
